@@ -11,4 +11,5 @@ export const {
     CLOUD_NAME,
     CLOUD_KEY,
     CLOUD_SECRET,
+    MAILTRAP_TOKEN
 } = env;

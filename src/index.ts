@@ -9,13 +9,16 @@ import profileRouter from '#/routers/profile'
 import historyRouter from '#/routers/history'
 import { errorHandler } from "./middleware/errors";
 
-
+const path = require('path')
 const app = express();
 const PORT = 8989;
+
+
 
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(express.static('src/public'));
+
 
 app.use("/auth", authRouter);
 app.use("/audio", audioRouter);
