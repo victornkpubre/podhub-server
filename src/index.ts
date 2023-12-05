@@ -30,8 +30,8 @@ app.use("/history", historyRouter);
 app.use(errorHandler)
 
 app.get('*', (req, res ) => {
-    res.json({
-        alive: true
+    res.status(404).json({
+        error: "Not Found!"
     })
 })
 
