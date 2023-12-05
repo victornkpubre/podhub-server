@@ -1,23 +1,8 @@
-import { generateTemplate } from "#/mail/template";
-import path from "path";
-import { EMAIL, MAILTRAP_PASS, MAILTRAP_TOKEN, MAILTRAP_USER, PASSWORD_RESET_LINK, SIGN_IN_URL, VERIFICATION_EMAIL } from "./variables";
-import nodemailer from 'nodemailer'
+import { EMAIL, MAILTRAP_TOKEN, PASSWORD_RESET_LINK, VERIFICATION_EMAIL } from "./variables";
 import { MailtrapClient } from "mailtrap"
-import fs from "fs"
 
 const ENDPOINT = "https://send.api.mailtrap.io/";
 
-
-const generateMailTransporter = () => {
-    return nodemailer.createTransport({
-        host: "sandbox.smtp.mailtrap.io",
-        port: 2525,
-        auth: {
-            user: MAILTRAP_USER,
-            pass: MAILTRAP_PASS,
-        }
-    });
-}
 
 interface Profile {
     name: string;
@@ -111,7 +96,8 @@ export const sendForgetPasswordMail = async ({email, link}: Options) => {
         template_variables: {
           "title": "Podify - Verification Email",
           "message": welcomeMessage,
-          "btnTitle": "Forgot Password"
+          "btnTitle": "Forgot Password",
+          'link': PASSWORD_RESET_LINK
         }
     })
 

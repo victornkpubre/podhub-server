@@ -29,16 +29,12 @@ app.use("/history", historyRouter);
 
 app.use(errorHandler)
 
+app.get('*', (req, res ) => {
+    res.json({
+        alive: true
+    })
+})
+
 app.listen(PORT, () => {
     console.log("Port is listening on port " + PORT)
 });
-
-/**
- * The plan n features
- * upload audio files
- * listen to single audio
- * add to favorites
- * create playlist
- * remove playlist (public - private)
- * remove audio
- * **/
