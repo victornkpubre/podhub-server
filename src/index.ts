@@ -29,6 +29,10 @@ app.use("/history", historyRouter);
 
 app.use(errorHandler)
 
+app.get('/', (req, res ) => {
+    res.status(404).sendFile("./public/")
+})
+
 app.get('*', (req, res ) => {
     res.status(404).json({
         error: "Not Found!"
