@@ -1,6 +1,6 @@
 import { generateTemplate } from "#/mail/template";
 import path from "path";
-import { MAILTRAP_PASS, MAILTRAP_TOKEN, MAILTRAP_USER, PASSWORD_RESET_LINK, SIGN_IN_URL, VERIFICATION_EMAIL } from "./variables";
+import { EMAIL, MAILTRAP_PASS, MAILTRAP_TOKEN, MAILTRAP_USER, PASSWORD_RESET_LINK, SIGN_IN_URL, VERIFICATION_EMAIL } from "./variables";
 import nodemailer from 'nodemailer'
 import { MailtrapClient } from "mailtrap"
 import fs from "fs"
@@ -96,65 +96,44 @@ interface Options {
 }
 
 export const sendForgetPasswordMail = async ({email, link}: Options) => {
-    const transport = generateMailTransporter()
-    const welcomeMessage = `You forgot your password? Use the link below and create brand new password`;
+    const welcomeMessage = "You forgot your password? Use the link below and create brand new password";
+    const client = new MailtrapClient({ endpoint: ENDPOINT, token: MAILTRAP_TOKEN});
 
-    transport.sendMail({
-        to: email,
-        from: VERIFICATION_EMAIL,
-        subject: "Reset Password Link",
-        html: generateTemplate({
-            title: "Forgot Password",
-            message: welcomeMessage,
-            logo: "cid:logo",
-            banner: "cid:forget_password",
-            link,
-            btnTitle: "Forgot Password"
-        }),
-        attachments: [
-            {
-                filename: "logo.png",
-                path: path.join(__dirname, "../mail/logo.png"),
-                cid: "logo"
-            },
-            {
-                filename: "forget_password.png",
-                path: path.join(__dirname, "../mail/forget_password.png"),
-                cid: "forget_password"
-            }
-        ]
-    });
+    const sender = {
+        email: EMAIL,
+        name: "Podify Password Reset",
+    };
+
+    client.send({
+        from: sender,
+        to: [{email: email}],
+        template_uuid: "c7d6203e-5868-4f64-9d14-3090bf0f4d5d",
+        template_variables: {
+          "title": "Podify - Verification Email",
+          "message": welcomeMessage,
+          "btnTitle": "Forgot Password"
+        }
+    })
 
 }
 
 export const sendPassResetSuccessEmail = async (name: string, email: string) => {
-    const transport = generateMailTransporter()
-    const welcomeMessage = `${name} we just updated your new password. You can now sign in with your new password`;
+    const message = `Hi ${name}, You'r password was successfully updated.`;
+    const client = new MailtrapClient({ endpoint: ENDPOINT, token: MAILTRAP_TOKEN});
 
-    transport.sendMail({
-        to: email,
-        from: VERIFICATION_EMAIL,
-        subject: "Password Reset Successfully",
-        html: generateTemplate({
-            title: "Password Reset Successfully",
-            message: welcomeMessage,
-            logo: "cid:logo",
-            banner: "cid:forget_password",
-            link: SIGN_IN_URL,
-            btnTitle: "Log in"
-        }),
-        attachments: [
-            {
-                filename: "logo.png",
-                path: path.join(__dirname, "../mail/logo.png"),
-                cid: "logo"
-            },
-            {
-                filename: "forget_password.png",
-                path: path.join(__dirname, "../mail/forget_password.png"),
-                cid: "forget_password"
-            }
-        ]
-    });
+    const sender = {
+        email: EMAIL,
+        name: "Podify Password Reset",
+    };
 
+    client.send({
+        from: sender,
+        to: [{email: email}],
+        template_uuid: "c7d6203e-5868-4f64-9d14-3090bf0f4d5d",
+        template_variables: {
+          "title": "Password Reset Successfully",
+          "message": message,
+          "btnTitle": "Login"
+        }
+    })
 }
