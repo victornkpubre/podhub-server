@@ -21,7 +21,7 @@ router.patch(
     updateAudio
 )
 
-router.post('/latest', getLatestUpload)
+router.get('/latest', getLatestUpload)
 
 
 export default router;
