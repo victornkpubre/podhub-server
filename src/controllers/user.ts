@@ -32,7 +32,7 @@ export const create:RequestHandler = async (req: CreateUserRequest, res) => {
 
         //Send verification email
         try {
-            sendVerificationMail(token, {name, email, userId: user._id.toString()});
+            await sendVerificationMail(token, {name, email, userId: user._id.toString()});
         } catch (error) {
             return res.status(500).json({message: error});    
         }
@@ -87,7 +87,7 @@ export const sendReVerification: RequestHandler = async (req, res) => {
         owner: user._id,
         token
     })
-    sendVerificationMail(token, {name: user.name, email: user.email, userId: user._id.toString()
+    await sendVerificationMail(token, {name: user.name, email: user.email, userId: user._id.toString()
     })
 
     res.json({message: "Please check you'r email"})
@@ -113,7 +113,7 @@ export const generateForgetPasswordLink: RequestHandler = async (req, res) => {
     })
 
     const resetLink = `${PASSWORD_RESET_LINK}?token=${token}&userId=${user._id}`
-    sendForgetPasswordMail({email: user.email, link: resetLink})
+    await sendForgetPasswordMail({email: user.email, link: resetLink})
     
     res.json({message: "Check your email"})
 }
@@ -140,7 +140,7 @@ export const updatePassword: RequestHandler = async (req, res) => {
         owner: user._id
     })
     
-    sendPassResetSuccessEmail(user.name, user.email)
+    await sendPassResetSuccessEmail(user.name, user.email)
     res.json({message: "Password resets successfully."})
 }
 
@@ -149,10 +149,10 @@ export const signIn: RequestHandler = async (req, res) => {
     const user = await User.findOne({
         email
     })
-    if(!user) return res.status(403).json({error: "Email/Password mismatch"})
+    if(!user) return res.status(403).json({error: "User not Found"})
 
     const matched = await user.comparePassword(password)
-    if(!matched) return res.status(403).json({error: "Email/Password"})
+    if(!matched) return res.status(403).json({error: "Email or Password don't match"})
 
     const token = jwt.sign({userId: user._id}, JWT_SECRET);
     user.tokens.push(token);

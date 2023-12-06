@@ -12,14 +12,14 @@ interface Profile {
 
 export const sendVerificationMail = async (token: string, {name, email}: Profile) => {
     // const transport = generateMailTransporter()
-    const welcomeMessage = `Hi ${name}, welcome to Podify! There are so much thing that we do for verified users. Use the given OTP to verify your email`;
+    const welcomeMessage = `Hi ${name}, welcome to PodHub! There are so much thing that we do for verified users. Use the given OTP to verify your email`;
     // const welcomeImage = fs.readFileSync(path.join(__dirname, "../mail/welcome.png"));
     // const logoImage = fs.readFileSync(path.join(__dirname, "../mail/logo.png"))
     const client = new MailtrapClient({ endpoint: ENDPOINT, token: MAILTRAP_TOKEN});
 
     const sender = {
         email: VERIFICATION_EMAIL,
-        name: "Podify Verification",
+        name: "PodHub Verification",
     };
     const recipients = [
         {
@@ -30,9 +30,9 @@ export const sendVerificationMail = async (token: string, {name, email}: Profile
     // client.send({
     //     from: sender,
     //     to: recipients,
-    //     subject: "Podify - Verification Email",
+    //     subject: "PodHub - Verification Email",
     //     html: generateTemplate({
-    //         title: "Welcome to Podify",
+    //         title: "Welcome to PodHub",
     //         message: welcomeMessage,
     //         logo: "cid:logo",
     //         banner: "cid:welcome",
@@ -58,12 +58,12 @@ export const sendVerificationMail = async (token: string, {name, email}: Profile
     //     ]
     // })
 
-    client.send({
+    return client.send({
         from: sender,
         to: [{email: email}],
         template_uuid: "a15e86e3-d2f6-45b3-8d6c-fbf869c4be44",
         template_variables: {
-          "title": "Welcome to Podify",
+          "title": "Welcome to PodHub",
           "message": welcomeMessage,
           "btnTitle": token,
           "user_name": name,
@@ -71,7 +71,7 @@ export const sendVerificationMail = async (token: string, {name, email}: Profile
           "get_started_link": "Test_Get_started_link",
           "onboarding_video_link": "Test_Onboarding_video_link"
         }
-      })
+      }).catch(error => console.log("Mail issue: ", error))
 
 }
 
@@ -86,20 +86,20 @@ export const sendForgetPasswordMail = async ({email, link}: Options) => {
 
     const sender = {
         email: EMAIL,
-        name: "Podify Password Reset",
+        name: "PodHub Password Reset",
     };
 
-    client.send({
+    return client.send({
         from: sender,
         to: [{email: email}],
         template_uuid: "c7d6203e-5868-4f64-9d14-3090bf0f4d5d",
         template_variables: {
-          "title": "Podify - Verification Email",
+          "title": "PodHub - Verification Email",
           "message": welcomeMessage,
           "btnTitle": "Forgot Password",
           'link': PASSWORD_RESET_LINK
         }
-    })
+    }).catch(error => console.log("Mail issue: ", error))
 
 }
 
@@ -109,10 +109,10 @@ export const sendPassResetSuccessEmail = async (name: string, email: string) => 
 
     const sender = {
         email: EMAIL,
-        name: "Podify Password Reset",
+        name: "PodHub Password Reset",
     };
 
-    client.send({
+    return client.send({
         from: sender,
         to: [{email: email}],
         template_uuid: "c7d6203e-5868-4f64-9d14-3090bf0f4d5d",
@@ -121,5 +121,5 @@ export const sendPassResetSuccessEmail = async (name: string, email: string) => 
           "message": message,
           "btnTitle": "Login"
         }
-    })
+    }).catch(error => console.log("Mail issue: ", error))
 }
