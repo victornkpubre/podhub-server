@@ -13,6 +13,8 @@ const path = require('path')
 const app = express();
 const PORT = 8989;
 
+var bodyParser = require("body-parser");
+app.use(bodyParser.json({limit: '100kb'}));
 
 
 app.use(express.json());
