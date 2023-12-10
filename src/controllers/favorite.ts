@@ -108,7 +108,6 @@ export const getFavorite: RequestHandler = async (req, res) => {
 }
 
 export const getIsFavorite: RequestHandler = async (req, res) => {
-    console.log(req.query.audioId)
     const audioId = req.query.audioId as string
 
     if(!isValidObjectId(audioId)) 

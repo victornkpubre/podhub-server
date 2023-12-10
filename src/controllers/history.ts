@@ -94,8 +94,6 @@ export const updateHistory: RequestHandler = async (req, res) => {
         }
     ])
 
-    console.log(audio)
-    console.log(histories)
     const sameAudioInHistory = histories.find((item) => {
         if(item.audio.toString() === audio ) return item;
     })

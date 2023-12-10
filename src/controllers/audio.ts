@@ -21,6 +21,7 @@ export const createAudio: RequestHandler = async (req: CreateAudioRequest, res) 
     const poster = req.files?.poster as formidable.File
     const audioFile = req.files?.file as formidable.File
     const ownerId = req.user.id
+    
 
     if(!audioFile) return res.status(422).json({error: "Audio file is missing!"})
 
@@ -65,7 +66,7 @@ export const createAudio: RequestHandler = async (req: CreateAudioRequest, res) 
         });
     }
 
-    res.status(201).json({audio: {
+    return res.status(201).json({audio: {
         title,
         about,
         file: newAudio.file.url,
@@ -80,9 +81,6 @@ export const updateAudio: RequestHandler = async (req: CreateAudioRequest, res) 
     const poster = req.files?.poster as formidable.File
     const ownerId = req.user.id
     const {audioId} = req.params
-
-    console.log(req.user.id )
-    console.log(req.body)
 
     const audio = await Audio.findOneAndUpdate(
         {owner: ownerId, _id: audioId},
@@ -124,7 +122,6 @@ export const updateAudio: RequestHandler = async (req: CreateAudioRequest, res) 
 
 
 export const getLatestUpload: RequestHandler = async (req, res) => {
-    console.log(req)
     const list = await Audio.find()
         .sort("-createdAt")
         .limit(10)
@@ -143,7 +140,6 @@ export const getLatestUpload: RequestHandler = async (req, res) => {
                 owner: item.owner
             }
         })
-    console.log(audios)
     res.json({audios})
 }
 
