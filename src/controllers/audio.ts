@@ -29,6 +29,8 @@ export const createAudio: RequestHandler = async (req: CreateAudioRequest, res) 
         resource_type: "video"
     })
 
+    console.log(audioRes)
+
     const newAudio = new Audio({
         title,
         about,
