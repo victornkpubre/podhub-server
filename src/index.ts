@@ -13,16 +13,14 @@ import bodyParser from "body-parser"
 const app = express();
 const PORT = 8989;
 
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-app.use(express.static('src/public'));
-
-
+// app.use(express.json());
+// app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     limit: '10mb',
     extended: true
 })); 
+app.use(express.static('src/public'));
 
 
 app.use("/auth", authRouter);
