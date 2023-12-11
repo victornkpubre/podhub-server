@@ -18,10 +18,10 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.static('src/public'));
 
 
-app.use(bodyParser.json({limit: '150mb'}));
+app.use(bodyParser.json({limit: '10mb'}));
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-limit: '150mb',
-extended: true
+    limit: '10mb',
+    extended: true
 })); 
 
 
