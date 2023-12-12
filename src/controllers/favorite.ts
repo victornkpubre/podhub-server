@@ -118,7 +118,7 @@ export const getIsFavorite: RequestHandler = async (req, res) => {
         items: audioId
     })
 
-    res.json({result: favorite? true: false})
+    return res.json({result: favorite? true: false})
 
 
 }
