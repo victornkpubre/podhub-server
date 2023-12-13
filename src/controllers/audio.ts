@@ -92,25 +92,29 @@ export const updateAudio: RequestHandler = async (req: CreateAudioRequest, res) 
 
     if(!audio) return res.status(404).json({error: "Record not found"})
 
+
+
     if(poster) {
         if(audio.poster?.publicId) {
             await cloudinary.uploader.destroy(audio.poster.publicId)
         }
+
+        const posterRes = await cloudinary.uploader.upload(poster.filepath, {
+            width: 300,
+            height: 300,
+            crop: "thumb",
+            gravity: "face"
+        });
+    
+        audio.poster = {
+            url: posterRes.secure_url,
+            publicId: posterRes.public_id
+        }
+    
+        await audio.save()
     }
 
-    const posterRes = await cloudinary.uploader.upload(poster.filepath, {
-        width: 300,
-        height: 300,
-        crop: "thumb",
-        gravity: "face"
-    });
-
-    audio.poster = {
-        url: posterRes.secure_url,
-        publicId: posterRes.public_id
-    }
-
-    await audio.save()
+    
     res.status(201).json({
         audio: {
             title,
