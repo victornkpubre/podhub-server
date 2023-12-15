@@ -1,4 +1,4 @@
-import { createPlaylist, getAudios, getPlaylistByProfile, removePlaylist, updatePlaylist } from "#/controllers/playlist";
+import { createPlaylist, getAudios, getPlaylistByProfile, removePlaylist, spotifyLogin, updatePlaylist } from "#/controllers/playlist";
 import { isVerified, mustAuth } from "#/middleware/auth";
 import { validate } from "#/middleware/validator";
 import { NewPlaylistValidationSchema } from "#/utils/validationSchema";
@@ -33,6 +33,10 @@ router.get('/by-profile',
 router.get('/:playlistId', 
     mustAuth, 
     getAudios
+)
+
+router.get('/login', 
+    spotifyLogin
 )
 
 export default router;
