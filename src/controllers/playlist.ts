@@ -4,7 +4,7 @@ import Playlist from "#/models/playlist";
 import { CreatePlaylistRequest, UpdatePlaylistRequest } from "#/requests/audio";
 import { isValidObjectId } from "mongoose";
 import { PopulatedFavList } from "#/utils/types";
-import { SpotifyApi, AccessToken } from "@spotify/web-api-ts-sdk";
+import { SpotifyApi, AccessToken, } from "@spotify/web-api-ts-sdk";
 
 export const createPlaylist: RequestHandler = async (req: CreatePlaylistRequest, res) => {
     const {title, resId, visibility} = req.body
@@ -164,8 +164,6 @@ export const getAudios: RequestHandler = async (req, res) => {
 export const spotifysearch: RequestHandler = async (req, res) => {
     const {accessToken} = req.params;
     
-    const sdk = SpotifyApi.withAccessToken('d5d8bfeb561e44c09bab30a30037f3b0', accessToken as any)
-
     const response = await fetch('https://api.spotify.com/v1/me', {
     headers: {
       Authorization: 'Bearer ' + accessToken
@@ -179,9 +177,14 @@ export const spotifysearch: RequestHandler = async (req, res) => {
 
 export const spotifysearch2: RequestHandler = async (req, res) => {
     const {accessToken} = req.params;
+    console.log(accessToken)
     
     const sdk = SpotifyApi.withAccessToken('d5d8bfeb561e44c09bab30a30037f3b0', accessToken as any)
+    console.log(sdk)
+    
     const items = await sdk.search("The Beatles", ["artist"]);
+    console.log(items)
+
 
     res.json({data: items})
 }
