@@ -182,7 +182,6 @@ export const spotifysearch2: RequestHandler = async (req, res) => {
         token_type: req.body.token_type,
         expires_in: req.body.expires_in,
         refresh_token: req.body.refresh_token,
-        expires: req.body.expires
     }
 
     console.log(accessToken)
