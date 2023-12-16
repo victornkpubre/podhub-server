@@ -4,6 +4,7 @@ import Playlist from "#/models/playlist";
 import { CreatePlaylistRequest, UpdatePlaylistRequest } from "#/requests/audio";
 import { isValidObjectId } from "mongoose";
 import { PopulatedFavList } from "#/utils/types";
+import { SpotifyApi, AccessToken } from "@spotify/web-api-ts-sdk";
 
 export const createPlaylist: RequestHandler = async (req: CreatePlaylistRequest, res) => {
     const {title, resId, visibility} = req.body
@@ -160,16 +161,14 @@ export const getAudios: RequestHandler = async (req, res) => {
     })
 }
 
-export const spotifyLogin: RequestHandler = async (req, res) => {
-    const SpotifyWebApi = require('spotify-web-api-node')
-    const spotifyApi = new SpotifyWebApi({
-        clientId: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
-        redirectUri: process.env.REDIRECT_URL
-    })
-    
-    const scope = ['user-read-private', 'user-read-email', 'user-read-playback-state', 'user-modify-playback-state']
-    
-    res.send(spotifyApi.createAuthorizeURL(scope))
-    
+export const spotifysearch: RequestHandler = async (req, res) => {
+    const {accessToken} = req.params;
+    const response = await fetch('https://api.spotify.com/v1/me', {
+    headers: {
+      Authorization: 'Bearer ' + accessToken
+    }
+  });
+
+  const data = await response.json();
+  res.json({data: data})
 }

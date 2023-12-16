@@ -9,6 +9,7 @@ import profileRouter from '#/routers/profile'
 import historyRouter from '#/routers/history'
 import { errorHandler } from "./middleware/errors";
 import bodyParser from "body-parser"
+import { SpotifyApi } from "@spotify/web-api-ts-sdk";
 
 const app = express();
 const PORT = 8989;
