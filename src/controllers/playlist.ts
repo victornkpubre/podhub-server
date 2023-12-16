@@ -163,12 +163,25 @@ export const getAudios: RequestHandler = async (req, res) => {
 
 export const spotifysearch: RequestHandler = async (req, res) => {
     const {accessToken} = req.params;
+    
+    const sdk = SpotifyApi.withAccessToken('d5d8bfeb561e44c09bab30a30037f3b0', accessToken as any)
+
     const response = await fetch('https://api.spotify.com/v1/me', {
     headers: {
       Authorization: 'Bearer ' + accessToken
     }
+
   });
 
   const data = await response.json();
   res.json({data: data})
+}
+
+export const spotifysearch2: RequestHandler = async (req, res) => {
+    const {accessToken} = req.params;
+    
+    const sdk = SpotifyApi.withAccessToken('d5d8bfeb561e44c09bab30a30037f3b0', accessToken as any)
+    const items = await sdk.search("The Beatles", ["artist"]);
+
+    res.json({data: items})
 }

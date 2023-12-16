@@ -1,4 +1,4 @@
-import { createPlaylist, getAudios, getPlaylistByProfile, removePlaylist, spotifysearch, updatePlaylist } from "#/controllers/playlist";
+import { createPlaylist, getAudios, getPlaylistByProfile, removePlaylist, spotifysearch, spotifysearch2, updatePlaylist } from "#/controllers/playlist";
 import { isVerified, mustAuth } from "#/middleware/auth";
 import { validate } from "#/middleware/validator";
 import { NewPlaylistValidationSchema } from "#/utils/validationSchema";
@@ -39,4 +39,7 @@ router.get('/spotify-search/:accessToken',
     spotifysearch
 )
 
+router.get('/spotify-search-2/:accessToken', 
+    spotifysearch2
+)
 export default router;
