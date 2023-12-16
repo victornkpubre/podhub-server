@@ -5,6 +5,7 @@ import { CreatePlaylistRequest, UpdatePlaylistRequest } from "#/requests/audio";
 import { isValidObjectId } from "mongoose";
 import { PopulatedFavList } from "#/utils/types";
 import { SpotifyApi, AccessToken, } from "@spotify/web-api-ts-sdk";
+import jsmediatags from 'jsmediatags'
 
 export const createPlaylist: RequestHandler = async (req: CreatePlaylistRequest, res) => {
     const {title, resId, visibility} = req.body
@@ -153,14 +154,14 @@ export const getAudios: RequestHandler = async (req, res) => {
         }
     })
 
-    var jsmediatags = require("jsmediatags");
+    
 
-    new jsmediatags.Reader(audios![0].file).setTagsToRead(["title", "artist"]).read({
-        onSuccess: function(tag: any) {
-        console.log(tag);
+    jsmediatags.read(audios![0].file, {
+        onSuccess: function(tag) {
+            console.log(tag);
         },
-        onError: function(error: any) {
-        console.log(':(', error.type, error.info);
+        onError: function(error) {
+            console.log(error);
         }
     });
 
