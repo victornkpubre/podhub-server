@@ -127,6 +127,7 @@ export const getPlaylistByProfile: RequestHandler = async (req, res) => {
 
 export const getAudios: RequestHandler = async (req, res) => {
     const {playlistId} = req.params;
+    console.log("Getting Audios")
 
     if( !isValidObjectId(playlistId)) 
         return res.status(422).json({error: "Audio is is invalid"})
