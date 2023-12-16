@@ -7,6 +7,8 @@ import Audio from "#/models/audio";
 import { ObjectId } from "mongodb";
 import { PopulatedFavList } from "#/utils/types";
 import Preferences from "#/models/preferences";
+import jsmediatags from 'jsmediatags'
+
 
 interface CreateAudioRequest extends RequestWithFiles {
     body: {
@@ -135,17 +137,27 @@ export const getLatestUpload: RequestHandler = async (req, res) => {
             path: "owner"
         });
     
-        const audios = list.map((item) => {
-            return {
-                id: item._id,
-                title: item.title, 
-                about: item.about,
-                category: item.category,
-                file: item.file,
-                poster: item.poster,
-                owner: item.owner
-            }
-        })
+    const audios = list.map((item) => {
+        return {
+            id: item._id,
+            title: item.title, 
+            about: item.about,
+            category: item.category,
+            file: item.file,
+            poster: item.poster,
+            owner: item.owner
+        }
+    })
+
+    jsmediatags.read(audios![0].file, {
+        onSuccess: function(tag) {
+            console.log(tag);
+        },
+        onError: function(error) {
+            console.log(error);
+        }
+    });
+
     res.json({audios})
 }
 
