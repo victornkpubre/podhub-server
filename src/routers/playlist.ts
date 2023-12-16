@@ -39,7 +39,7 @@ router.get('/spotify-search/:accessToken',
     spotifysearch
 )
 
-router.get('/spotify-search-2/:accessToken', 
+router.post('/spotify-search-2/:accessToken', 
     spotifysearch2
 )
 export default router;

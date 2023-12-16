@@ -176,10 +176,18 @@ export const spotifysearch: RequestHandler = async (req, res) => {
 }
 
 export const spotifysearch2: RequestHandler = async (req, res) => {
-    const {accessToken} = req.params;
+
+    const accessToken = {
+        access_token: req.body.access_token,
+        token_type: req.body.token_type,
+        expires_in: req.body.expires_in,
+        refresh_token: req.body.refresh_token,
+        expires: req.body.expires
+    }
+
     console.log(accessToken)
     
-    const sdk = SpotifyApi.withAccessToken('d5d8bfeb561e44c09bab30a30037f3b0', accessToken as any)
+    const sdk = SpotifyApi.withAccessToken('d5d8bfeb561e44c09bab30a30037f3b0', accessToken as AccessToken)
     console.log(sdk)
     
     const items = await sdk.search("The Beatles", ["artist"]);
