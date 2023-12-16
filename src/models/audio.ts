@@ -7,6 +7,8 @@ export interface AudioDocument<T = ObjectId> {
     title: string
     about: string
     owner: T
+    // artist?: string
+    // album?: string
     file: {
         url: string;
         publicId: string;

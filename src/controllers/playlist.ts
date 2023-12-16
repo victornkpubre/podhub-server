@@ -142,6 +142,7 @@ export const getAudios: RequestHandler = async (req, res) => {
     })
 
     const audios = playlist?.items.map((item) => {
+        
         return {
             id: item._id,
             title: item.title,
@@ -151,6 +152,17 @@ export const getAudios: RequestHandler = async (req, res) => {
             owner: {name: item.owner.name, id: item.owner._id ,}
         }
     })
+
+    var jsmediatags = require("jsmediatags");
+
+    new jsmediatags.Reader(audios![0].file).setTagsToRead(["title", "artist"]).read({
+        onSuccess: function(tag: any) {
+        console.log(tag);
+        },
+        onError: function(error: any) {
+        console.log(':(', error.type, error.info);
+        }
+    });
 
     res.json({
         audioslist: {
