@@ -97,6 +97,8 @@ export const getFavorite: RequestHandler = async (req, res) => {
             _id: 0,
             id: "$audioInfo._id",
             title: "$audioInfo.title",
+            artist: "$audioInfo.artist",
+            album: "$audioInfo.album",
             about: "$audioInfo.about",
             file: "$audioInfo.file.url",
             poster: "$audioInfo.poster",

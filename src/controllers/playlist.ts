@@ -6,6 +6,7 @@ import { isValidObjectId } from "mongoose";
 import { PopulatedFavList } from "#/utils/types";
 import { SpotifyApi, AccessToken, } from "@spotify/web-api-ts-sdk";
 
+
 export const createPlaylist: RequestHandler = async (req: CreatePlaylistRequest, res) => {
     const {title, resId, visibility} = req.body
     const ownerId = req.user.id
@@ -165,17 +166,14 @@ export const getAudios: RequestHandler = async (req, res) => {
 }
 
 export const spotifysearch: RequestHandler = async (req, res) => {
-    const {accessToken} = req.params;
-    
-    const response = await fetch('https://api.spotify.com/v1/me', {
-    headers: {
-      Authorization: 'Bearer ' + accessToken
-    }
+    //get list of audio id
+    const audios = req.body.audios
 
-  });
+    //search spotify bt audio titles return response
+    //filter audio response by artist and album return list of spotify ids
+    //create list of unmatched audios
 
-  const data = await response.json();
-  res.json({data: data})
+    // res.json({data: data})
 }
 
 export const spotifysearch2: RequestHandler = async (req, res) => {

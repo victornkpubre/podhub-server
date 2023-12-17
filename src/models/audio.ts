@@ -5,10 +5,10 @@ import {Model, ObjectId, Schema, model, models} from "mongoose";
 export interface AudioDocument<T = ObjectId> {
     _id: ObjectId
     title: string
-    about: string
+    artist?: string
+    album?: string
+    about?: string
     owner: T
-    // artist?: string
-    // album?: string
     file: {
         url: string;
         publicId: string;
@@ -24,6 +24,14 @@ export interface AudioDocument<T = ObjectId> {
 
 const AudioSchema = new Schema<AudioDocument>({
     title: {
+        type: String,
+        required: true
+    },
+    artist: {
+        type: String,
+        required: true
+    },
+    album: {
         type: String,
         required: true
     },
