@@ -165,34 +165,25 @@ export const getAudios: RequestHandler = async (req, res) => {
     })
 }
 
-export const spotifysearch: RequestHandler = async (req, res) => {
-    //get list of audio id
-    const audios = req.body.audios
-
-    //search spotify bt audio titles return response
-    //filter audio response by artist and album return list of spotify ids
-    //create list of unmatched audios
-
-    // res.json({data: data})
-}
-
-export const spotifysearch2: RequestHandler = async (req, res) => {
-
+export const spotifymigrate: RequestHandler = async (req, res) => {
     const accessToken = {
         access_token: req.body.access_token,
         token_type: req.body.token_type,
         expires_in: req.body.expires_in,
         refresh_token: req.body.refresh_token,
     }
-
-    console.log(accessToken)
-    
     const sdk = SpotifyApi.withAccessToken('d5d8bfeb561e44c09bab30a30037f3b0', accessToken as AccessToken)
-    console.log(sdk)
-    
-    const items = await sdk.search("The Beatles", ["artist"]);
-    console.log(items)
 
+    const audioList = req.body.audio_list
+    const failures:any =  []
+    const success: any = []
 
-    res.json({data: items})
+    for (let i = 0; i < audioList.length; i++) {
+        const item = audioList[i];
+
+        const result = await sdk.search(`${item.title}%album:${item.album}%20artist:${item.artist}%20Davis`, ['track'])
+        console.log(result)
+    }
+   
+    res.json({data: {failures, success}})
 }
