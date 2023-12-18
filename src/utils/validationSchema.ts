@@ -69,7 +69,6 @@ export const NewPlaylistValidationSchema = yup.object().shape({
     }) ,
     visibility: yup.string()
                  .oneOf(["public", "private"], "Visibility must be public or private")
-                //  .required("Visibility is missing")
 })
 
 export const UpdateHistorySchema = yup.object().shape({

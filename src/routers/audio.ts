@@ -17,7 +17,6 @@ router.patch(
     mustAuth,
     isVerified,
     fileParser,
-    validate(AudioValidationSchema),
     updateAudio
 )
 
