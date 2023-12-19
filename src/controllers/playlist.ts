@@ -208,7 +208,7 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
                 title: track.name, 
                 artist: track.artists[0].name, 
                 album: track.album.name, 
-                image: track.album.images[1].url??track.album.images[0].url 
+                image: track.album.images[1]?.url??track.album.images[0].url 
             }
 
             console.log("Found a match")
