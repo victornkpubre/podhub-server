@@ -95,8 +95,7 @@ export const updateAudio: RequestHandler = async (req: CreateAudioRequest, res) 
         {new: true}
     )
 
-    if(!audio) return res.status(404).json({error: "Record not found"})
-
+    if(!audio) return res.status(404).json({error: "Sorry you can't update this audio. The ownwer will be notified"})
 
 
     if(poster) {

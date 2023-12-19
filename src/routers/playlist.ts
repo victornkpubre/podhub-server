@@ -36,6 +36,7 @@ router.get('/:playlistId',
 )
 
 router.post('/spotify-migrate', 
+    mustAuth, 
     spotifymigrate
 )
 export default router;

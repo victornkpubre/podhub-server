@@ -165,7 +165,7 @@ export const getAudios: RequestHandler = async (req, res) => {
 }
 
 export const spotifymigrate: RequestHandler = async (req, res) => {
-    const accessToken = {
+   const accessToken = {
         access_token: req.body.access_token,
         token_type: req.body.token_type,
         expires_in: req.body.expires_in,
@@ -185,8 +185,11 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
         //get result items. album, artist and title 
 
         result.tracks.items.forEach((track) => {
+            console.log("Found a match")
+            console.log(track.artists[0].name === item.artist && track.name === item.title && track.album.name === item.album)
+
             if (track.artists[0].name === item.artist && track.name === item.title && track.album.name === item.album ) {
-                const matcheIndex = matchList.findIndex((match) => { match.item._id === item._id})
+                const matchIndex = matchList.findIndex((match) => { match.item._id === item._id})
                 const spotifyTrack = {
                     id: track.id, 
                     title: track.name, 
@@ -195,15 +198,20 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
                     image: track.album.images[1].url 
                 }
 
+                console.log("Created spotify track")
+                console.log(spotifyTrack)
+
+                console.log("Matches Index")
+                console.log(matchIndex)
                 
-                if(matcheIndex == -1) {
+                if(matchIndex == -1) {
                     matchList.push({
                         item: item,
                         matches: [spotifyTrack]
                     })
                 }
                 else {
-                    matchList[matcheIndex].matches.push(spotifyTrack)
+                    matchList[matchIndex].matches.push(spotifyTrack)
                 }
             }
         })
