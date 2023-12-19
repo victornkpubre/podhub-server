@@ -40,7 +40,7 @@ export const create:RequestHandler = async (req: CreateUserRequest, res) => {
         return res.status(201).json({user});
 
     } catch (error) {
-        console.log(`Error Caught: ${error}`)
+         
         return res.status(500).json({message: (error as MongoServerError).errmsg})
     }
 }
@@ -70,7 +70,7 @@ export const verifyEmail: RequestHandler = async (req: VerifyEmailRequest, res) 
 
 export const sendReVerification: RequestHandler = async (req, res) => {
     const  {userId} = req.body;
-    console.log(req.body)
+     
     if (!isValidObjectId(userId)) return res.status(403).json({error: "Invalid request!"})
 
     const user = await User.findById(userId)
@@ -96,7 +96,7 @@ export const sendReVerification: RequestHandler = async (req, res) => {
 
 export const generateForgetPasswordLink: RequestHandler = async (req, res) => {
     const {email} = req.body;
-    console.log(req.body)
+     
     const user = await User.findOne({email})
 
     if(!user) return res.status(403).json({error: 'Account not found!'})
@@ -159,7 +159,7 @@ export const signIn: RequestHandler = async (req, res) => {
 
     await user.save();
 
-    console.log(user)
+     
 
     res.json({
         profile: {
@@ -180,7 +180,7 @@ export const updateProfile: RequestHandler = async (req: RequestWithFiles, res) 
     const {name} = req.body;
     const avatar = req.files?.avatar as formidable.File;
 
-    console.log(req.body)
+     
 
     const user = await User.findById(req.user.id);
     

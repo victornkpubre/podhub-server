@@ -98,11 +98,9 @@ export const updateHistory: RequestHandler = async (req, res) => {
         if(item.audio.toString() === audio ) return item;
     })
 
-    console.log(sameAudioInHistory)
 
     let newHistory;
     if(sameAudioInHistory) {
-        console.log("Found same audio")
         newHistory = await History.findOneAndUpdate(
             {
                 owner: req.user.id,
@@ -124,7 +122,6 @@ export const updateHistory: RequestHandler = async (req, res) => {
             $push: {all: {$each: [history], $position: 0}},
             $set: {last: history},
         }, {new: true})
-        console.log("Adding new audio")
     }
 
     res.json(newHistory)

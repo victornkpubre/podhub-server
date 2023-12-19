@@ -41,7 +41,7 @@ export const mustAuth: RequestHandler = async (req, res, next) => {
     }
     req.token = token
 
-    console.log(user._id)
+     
     
     next()
 }

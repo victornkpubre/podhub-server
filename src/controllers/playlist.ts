@@ -1,9 +1,9 @@
 import { RequestHandler } from "express";
-import Audio from "#/models/audio";
+import Audio, { AudioDocument } from "#/models/audio";
 import Playlist from "#/models/playlist";
 import { CreatePlaylistRequest, UpdatePlaylistRequest } from "#/requests/audio";
 import { isValidObjectId } from "mongoose";
-import { PopulatedFavList } from "#/utils/types";
+import { MigrationResult, PopulatedFavList } from "#/utils/types";
 import { SpotifyApi, AccessToken, } from "@spotify/web-api-ts-sdk";
 
 
@@ -19,7 +19,6 @@ export const createPlaylist: RequestHandler = async (req: CreatePlaylistRequest,
     }
 
     const duplicateTitle = await Playlist.findOne({title: title})
-    console.log(duplicateTitle)
 
     if(duplicateTitle) return res.status(422).json({error: "You already have a playlist with this title"})
 
@@ -127,7 +126,7 @@ export const getPlaylistByProfile: RequestHandler = async (req, res) => {
 
 export const getAudios: RequestHandler = async (req, res) => {
     const {playlistId} = req.params;
-    console.log("Getting Audios")
+     
 
     if( !isValidObjectId(playlistId)) 
         return res.status(422).json({error: "Audio is is invalid"})
@@ -174,16 +173,41 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
     }
     const sdk = SpotifyApi.withAccessToken('d5d8bfeb561e44c09bab30a30037f3b0', accessToken as AccessToken)
 
-    const audioList = req.body.audio_list
-    const failures:any =  []
-    const success: any = []
+    const audioList = req.body.audio_list as AudioDocument[]
+    const matchList: MigrationResult = []
 
     for (let i = 0; i < audioList.length; i++) {
         const item = audioList[i];
 
-        const result = await sdk.search(`${item.title}%album:${item.album}%20artist:${item.artist}%20Davis`, ['track'])
-        console.log(result)
+        const result = await sdk.search(`${item.title}%20album:${item.album}%20artist:${item.artist}%20Davis`, ['track'])
+         
+
+        //get result items. album, artist and title 
+
+        result.tracks.items.forEach((track) => {
+            if (track.artists[0].name === item.artist && track.name === item.title && track.album.name === item.album ) {
+                const matcheIndex = matchList.findIndex((match) => { match.item._id === item._id})
+                const spotifyTrack = {
+                    id: track.id, 
+                    title: track.name, 
+                    artist: track.artists[0].name, 
+                    album: track.album.name, 
+                    image: track.album.images[1].url 
+                }
+
+                
+                if(matcheIndex == -1) {
+                    matchList.push({
+                        item: item,
+                        matches: [spotifyTrack]
+                    })
+                }
+                else {
+                    matchList[matcheIndex].matches.push(spotifyTrack)
+                }
+            }
+        })
     }
    
-    res.json({data: {failures, success}})
+    res.json({data: matchList})
 }

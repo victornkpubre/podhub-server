@@ -29,7 +29,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     token = params.token,
     userId = params.userId
 
-    console.log(token)
+     
 
     const res = await fetch("/auth/verify-password-reset-token", {
         method: 'POST',
@@ -45,7 +45,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         return 
     }
 
-    console.log(res.status)
+     
 
     loader.style.display = "none";
     container.style.display = "block";
