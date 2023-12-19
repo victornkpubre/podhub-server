@@ -1,4 +1,4 @@
-import { createPlaylist, getAudios, getPlaylistByProfile, removePlaylist, spotifymigrate, spotifysearch, updatePlaylist } from "#/controllers/playlist";
+import { createPlaylist, getAudios, getPlaylistByProfile, removePlaylist, spotifymigrate, updatePlaylist } from "#/controllers/playlist";
 import { isVerified, mustAuth } from "#/middleware/auth";
 import { validate } from "#/middleware/validator";
 import { NewPlaylistValidationSchema } from "#/utils/validationSchema";
