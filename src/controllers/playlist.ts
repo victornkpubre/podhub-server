@@ -185,6 +185,14 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
         //get result items. album, artist and title 
 
         result.tracks.items.forEach((track) => {
+
+            console.log(track.artists[0].name)
+            console.log(item.artist)
+            console.log(track.name)
+            console.log(item.title)
+            console.log(track.album.name)
+            console.log(item.album)
+
             console.log("Found a match")
             console.log(track.artists[0].name === item.artist && track.name === item.title && track.album.name === item.album)
 
