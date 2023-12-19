@@ -182,20 +182,22 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
 
     for (let i = 0; i < audioList.length; i++) {
         const item = audioList[i];
+        const itemTitle = processString(item.title)
+        const itemArtist = processString(item.artist!)
+        const itemAlbum = processString(item.album!)
 
-        const result = await sdk.search(`${item.title}%20album:${item.album}%20artist:${item.artist}%20Davis`, ['track'])
+        const result = await sdk.search(`${itemTitle}%20track:${itemTitle}%20album:${itemAlbum}%20artist:${itemArtist}%20Davis`, ['track'])
          
-
-        //get result items. album, artist and title 
-
         result.tracks.items.forEach((track) => {
 
             console.log(processString(track.artists[0].name))
-            console.log(processString(item.artist!))
+            console.log(itemArtist)
+
             console.log(processString(track.name))
-            console.log(processString(item.title))
+            console.log(itemTitle)
+
             console.log(processString(track.album.name))
-            console.log(processString(item.album!))
+            console.log(itemAlbum)
 
             const spotifyTrack = {
                 id: track.id, 
@@ -212,9 +214,9 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
 
 
 
-            if ( processString(spotifyTrack.artist)  === processString(item.artist!)
-            && processString(spotifyTrack.title) === processString(item.title) 
-            && processString(spotifyTrack.album) === processString(item.album!) ) {
+            if ( processString(spotifyTrack.artist)  === itemArtist
+            && processString(spotifyTrack.title) === itemTitle 
+            && processString(spotifyTrack.album) === itemAlbum ) {
                 const matchIndex = matchList.findIndex((match) => { match.item._id === item._id})
 
                 console.log("Created spotify track")
