@@ -164,6 +164,10 @@ export const getAudios: RequestHandler = async (req, res) => {
     })
 }
 
+const processString = ( str: string): string => {
+    return (str.replace(/\s/g, '')).toLowerCase()
+}
+
 export const spotifymigrate: RequestHandler = async (req, res) => {
    const accessToken = {
         access_token: req.body.access_token,
@@ -186,25 +190,32 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
 
         result.tracks.items.forEach((track) => {
 
-            console.log(track.artists[0].name)
-            console.log(item.artist)
-            console.log(track.name)
-            console.log(item.title)
-            console.log(track.album.name)
-            console.log(item.album)
+            console.log(processString(track.artists[0].name))
+            console.log(processString(item.artist!))
+            console.log(processString(track.name))
+            console.log(processString(item.title))
+            console.log(processString(track.album.name))
+            console.log(processString(item.album!))
+
+            const spotifyTrack = {
+                id: track.id, 
+                title: track.name, 
+                artist: track.artists[0].name, 
+                album: track.album.name, 
+                image: track.album.images[1].url 
+            }
 
             console.log("Found a match")
-            console.log(track.artists[0].name === item.artist && track.name === item.title && track.album.name === item.album)
+            console.log(processString(spotifyTrack.artist)  === processString(item.artist!)
+            && processString(spotifyTrack.title) === processString(item.title) 
+            && processString(spotifyTrack.album) === processString(item.album!) )
 
-            if (track.artists[0].name === item.artist && track.name === item.title && track.album.name === item.album ) {
+
+
+            if ( processString(spotifyTrack.artist)  === processString(item.artist!)
+            && processString(spotifyTrack.title) === processString(item.title) 
+            && processString(spotifyTrack.album) === processString(item.album!) ) {
                 const matchIndex = matchList.findIndex((match) => { match.item._id === item._id})
-                const spotifyTrack = {
-                    id: track.id, 
-                    title: track.name, 
-                    artist: track.artists[0].name, 
-                    album: track.album.name, 
-                    image: track.album.images[1].url 
-                }
 
                 console.log("Created spotify track")
                 console.log(spotifyTrack)
