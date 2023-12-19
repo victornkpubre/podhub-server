@@ -563,6 +563,8 @@ export const getPlaylistAudios: RequestHandler = async (req, res) => {
               $push: {
                 id: "$audios._id",
                 title: "$audios.title",
+                artist: "$audios.artist",
+                album: "$audios.album", 
                 about: "$audios.about",
                 category: "$audios.category",
                 file: "$audios.file.url",
