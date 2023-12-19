@@ -40,7 +40,7 @@ export const sendVerificationMail = async (token: string, {name, email}: Profile
           "get_started_link": "Test_Get_started_link",
           "onboarding_video_link": "Test_Onboarding_video_link"
         }
-      }).catch(error =>  )
+      }).catch(error =>  console.log("Mailing Error: "+error))
 
 }
 
@@ -68,7 +68,7 @@ export const sendForgetPasswordMail = async ({email, link}: Options) => {
           "btnTitle": "Forgot Password",
           'link': PASSWORD_RESET_LINK
         }
-    }).catch(error =>  )
+    }).catch(error =>  console.log("Mailing Error: "+error))
 
 }
 
@@ -90,5 +90,5 @@ export const sendPassResetSuccessEmail = async (name: string, email: string) => 
           "message": message,
           "btnTitle": "Login"
         }
-    }).catch(error =>  )
+    }).catch(error =>  console.log("Mailing Error: "+error))
 }
