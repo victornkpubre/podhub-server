@@ -229,6 +229,7 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
             
 
             if (trackWasFound) {
+                console.log(matchList)
                 const matchIndex = matchList.findIndex((match) => { 
                     console.log(match.item._id)
                     console.log(item._id)
@@ -244,13 +245,15 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
                 console.log("Match Index")
                 console.log(matchIndex)
                 
-                if(matchIndex == -1) {
+                if(matchIndex == -1 || !matchList.length) {
+                    console.log("adding to match list")
                     matchList.push({
                         item: item,
                         matches: [spotifyTrack]
                     })
                 }
                 else {
+                    console.log("adding to matches")
                     matchList[matchIndex].matches.push(spotifyTrack)
                 }
             }
