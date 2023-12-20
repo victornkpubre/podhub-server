@@ -1,9 +1,9 @@
 import { RequestHandler } from "express";
-import Audio, { AudioDocument } from "#/models/audio";
+import Audio from "#/models/audio";
 import Playlist from "#/models/playlist";
 import { CreatePlaylistRequest, UpdatePlaylistRequest } from "#/requests/audio";
 import { isValidObjectId } from "mongoose";
-import { MigrationResult, PopulatedFavList } from "#/utils/types";
+import { AudioItem, MigrationResult, PopulatedFavList } from "#/utils/types";
 import { SpotifyApi, AccessToken, } from "@spotify/web-api-ts-sdk";
 
 
@@ -177,7 +177,7 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
     }
     const sdk = SpotifyApi.withAccessToken('d5d8bfeb561e44c09bab30a30037f3b0', accessToken as AccessToken)
 
-    const audioList = req.body.audio_list as AudioDocument[]
+    const audioList = req.body.audio_list as AudioItem[]
     const matchList: MigrationResult = []
 
     for (let i = 0; i < audioList.length; i++) {
@@ -231,11 +231,11 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
             if (trackWasFound) {
                 console.log(matchList)
                 const matchIndex = matchList.findIndex((match) => { 
-                    console.log(match.item._id)
-                    console.log(item._id)
-                    console.log( match.item._id === item._id)
+                    console.log(match.item.id)
+                    console.log(item.id)
+                    console.log( match.item.id === item.id)
 
-                    match.item._id === item._id
+                    match.item.id === item.id
                 })
 
 
