@@ -186,16 +186,19 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
         const itemArtist = processString(item.artist!)
         const itemAlbum = processString(item.album!)
 
-        const result = await sdk.search(`${itemTitle}%20track:${itemTitle}%20album:${itemAlbum}%20artist:${itemArtist}%20Davis`, ['track'])
+        const result = await sdk.search(`${itemTitle}%20track:${itemTitle}%20album:${itemAlbum}%20artist:${itemArtist}`, ['track'])
          
         result.tracks.items.forEach((track) => {
 
+            console.log("Artist")
             console.log(processString(track.artists[0].name))
             console.log(itemArtist)
 
+            console.log("Track")
             console.log(processString(track.name))
             console.log(itemTitle)
 
+            console.log("Album")
             console.log(processString(track.album.name))
             console.log(itemAlbum)
 
@@ -217,16 +220,19 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
             && processString(spotifyTrack.album) === processString(item.album!) )
 
 
+            const albumRegex = new RegExp(`^${itemAlbum}`, "i");
+            
+            const trackWasFound = processString(spotifyTrack.artist) === itemArtist
+                && processString(spotifyTrack.title) === itemTitle 
+                && albumRegex.test(processString(spotifyTrack.album)) 
 
-            if ( processString(spotifyTrack.artist)  === itemArtist
-            && processString(spotifyTrack.title) === itemTitle 
-            && processString(spotifyTrack.album) === itemAlbum ) {
+            if (trackWasFound) {
                 const matchIndex = matchList.findIndex((match) => { match.item._id === item._id})
 
-                console.log("Created spotify track")
+                console.log("Track was found")
                 console.log(spotifyTrack)
 
-                console.log("Matches Index")
+                console.log("Match Index")
                 console.log(matchIndex)
                 
                 if(matchIndex == -1) {
