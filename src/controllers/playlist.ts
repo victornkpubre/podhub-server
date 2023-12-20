@@ -165,7 +165,7 @@ export const getAudios: RequestHandler = async (req, res) => {
 }
 
 const processString = ( str: string): string => {
-    return (str.replace(/\s/g, '')).toLowerCase()
+    return (str).toLowerCase()
 }
 
 export const spotifymigrate: RequestHandler = async (req, res) => {
@@ -221,13 +221,22 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
 
 
             const albumRegex = new RegExp(`^${itemAlbum}`, "i");
-            
+
             const trackWasFound = processString(spotifyTrack.artist) === itemArtist
                 && processString(spotifyTrack.title) === itemTitle 
                 && albumRegex.test(processString(spotifyTrack.album)) 
 
+            
+
             if (trackWasFound) {
-                const matchIndex = matchList.findIndex((match) => { match.item._id === item._id})
+                const matchIndex = matchList.findIndex((match) => { 
+                    console.log(match.item._id)
+                    console.log(item._id)
+                    console.log( match.item._id === item._id)
+
+                    match.item._id === item._id
+                })
+
 
                 console.log("Track was found")
                 console.log(spotifyTrack)
