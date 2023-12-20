@@ -235,7 +235,7 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
                     console.log(item.id)
                     console.log( match.item.id === item.id)
 
-                    match.item.id === item.id
+                    return match.item.id === item.id
                 })
 
 
