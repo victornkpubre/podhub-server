@@ -169,7 +169,7 @@ const processString = ( str: string): string => {
 }
 
 export const spotifymigrate: RequestHandler = async (req, res) => {
-   const accessToken = {
+    const accessToken = {
         access_token: req.body.access_token,
         token_type: req.body.token_type,
         expires_in: req.body.expires_in,
@@ -261,4 +261,30 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
     }
    
     res.json({data: matchList})
+}
+
+export const createSpotifyPlaylist: RequestHandler = async (req, res) => {
+    const accessToken = {
+        access_token: req.body.access_token,
+        token_type: req.body.token_type,
+        expires_in: req.body.expires_in,
+        refresh_token: req.body.refresh_token,
+    }
+    const playlist = req.body.playlist as string[]
+    const title = req.body.title
+
+    const sdk = SpotifyApi.withAccessToken('d5d8bfeb561e44c09bab30a30037f3b0', accessToken as AccessToken)
+    const id = (await sdk.currentUser.profile()).id
+
+    const playlists = (await sdk.playlists.getUsersPlaylists(id)).items
+    for (let i = 0; i < playlists.length ; i++) {
+        const playlist = playlists[i];
+        if(playlist.name === title) return res.status(404).json({error: "Playlist already exists"}) 
+    }
+
+    //create playlist
+    const spotifyPlaylist = await sdk.playlists.createPlaylist(id, {name: title})
+    await sdk.playlists.addItemsToPlaylist(spotifyPlaylist.id, playlist)
+
+    res.json({playlist: spotifyPlaylist})
 }

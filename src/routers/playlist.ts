@@ -1,4 +1,4 @@
-import { createPlaylist, getAudios, getPlaylistByProfile, removePlaylist, spotifymigrate, updatePlaylist } from "#/controllers/playlist";
+import { createPlaylist, createSpotifyPlaylist, getAudios, getPlaylistByProfile, removePlaylist, spotifymigrate, updatePlaylist } from "#/controllers/playlist";
 import { isVerified, mustAuth } from "#/middleware/auth";
 import { validate } from "#/middleware/validator";
 import { NewPlaylistValidationSchema } from "#/utils/validationSchema";
@@ -39,4 +39,10 @@ router.post('/spotify-migrate',
     mustAuth, 
     spotifymigrate
 )
+
+router.post('/spotify-create-playlist', 
+    mustAuth, 
+    createSpotifyPlaylist
+)
+
 export default router;
