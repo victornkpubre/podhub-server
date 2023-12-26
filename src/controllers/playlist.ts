@@ -217,6 +217,8 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
             console.log("Found a match")
             console.log(processString(item.title))
             console.log(processString(spotifyTrack.title))
+            console.log(processString(spotifyTrack.album))
+            console.log(processString(spotifyTrack.artist))
             console.log(processString(spotifyTrack.artist)  === processString(item.artist!)
             && processString(spotifyTrack.title) === processString(item.title) 
             && processString(spotifyTrack.album) === processString(item.album!) )
