@@ -228,7 +228,7 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
 
             const trackWasFound = processString(spotifyTrack.artist) === itemArtist
                 && processString(spotifyTrack.title) === itemTitle 
-                && processString(spotifyTrack.album) === itemAlbum 
+                && albumRegex.test(processString(spotifyTrack.album)) 
 
             
 
