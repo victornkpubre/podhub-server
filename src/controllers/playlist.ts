@@ -164,12 +164,12 @@ export const getAudios: RequestHandler = async (req, res) => {
     })
 }
 
-const processString = ( str: string): string => {
+const convertToLowerCase = ( str: string): string => {
     return (str).toLowerCase()
 }
 
-const albumProcessRegex = (str: string): string => {
-    return str.split(' ').join('/s*')
+const processForRegex = (str: string): string => {
+    return str.split(' ').join('')
 }
 
 export const spotifymigrate: RequestHandler = async (req, res) => {
@@ -186,24 +186,24 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
 
     for (let i = 0; i < audioList.length; i++) {
         const item = audioList[i];
-        const itemTitle = processString(item.title)
-        const itemArtist = processString(item.artist!)
-        const itemAlbum = processString(item.album!)
+        const itemTitle = convertToLowerCase(item.title)
+        const itemArtist = convertToLowerCase(item.artist!)
+        const itemAlbum = convertToLowerCase(item.album!)
 
         const result = await sdk.search(`${itemTitle}%20track:${itemTitle}%20album:${itemAlbum}%20artist:${itemArtist}`, ['track'], undefined, 40)
          
         result.tracks.items.forEach((track) => {
 
             // console.log("Artist")
-            // console.log(processString(track.artists[0].name))
+            // console.log(convertToLowerCase(track.artists[0].name))
             // console.log(itemArtist)
 
             // console.log("Track")
-            // console.log(processString(track.name))
+            // console.log(convertToLowerCase(track.name))
             // console.log(itemTitle)
 
             // console.log("Album")
-            // console.log(processString(track.album.name))
+            // console.log(convertToLowerCase(track.album.name))
             // console.log(itemAlbum)
 
             // console.log("Images")
@@ -219,21 +219,21 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
             }
 
             console.log("Found a match")
-            console.log(processString(item.title))
-            console.log(processString(spotifyTrack.title))
-            console.log(processString(spotifyTrack.album))
-            console.log(processString(spotifyTrack.artist))
-            console.log(processString(spotifyTrack.artist)  === processString(item.artist!)
-            && processString(spotifyTrack.title) === processString(item.title) 
-            && processString(spotifyTrack.album) === processString(item.album!) )
+            console.log(convertToLowerCase(item.title))
+            console.log(convertToLowerCase(spotifyTrack.title))
+            console.log(convertToLowerCase(spotifyTrack.album))
+            console.log(convertToLowerCase(spotifyTrack.artist))
+            console.log(convertToLowerCase(spotifyTrack.artist)  === convertToLowerCase(item.artist!)
+            && convertToLowerCase(spotifyTrack.title) === convertToLowerCase(item.title) 
+            && convertToLowerCase(spotifyTrack.album) === convertToLowerCase(item.album!) )
 
-            console.log(albumProcessRegex(itemAlbum))
+            console.log(processForRegex(itemAlbum))
 
-            const albumRegex = new RegExp(`^${albumProcessRegex(itemAlbum)}/s*(.*)`, "i");
+            const albumRegex = new RegExp(`^${processForRegex(itemAlbum)}(.*)`, "i");
 
-            const trackWasFound = processString(spotifyTrack.artist) === itemArtist
-                && processString(spotifyTrack.title) === itemTitle 
-                && albumRegex.test(processString(spotifyTrack.album)) 
+            const trackWasFound = convertToLowerCase(spotifyTrack.artist) === itemArtist
+                && convertToLowerCase(spotifyTrack.title) === itemTitle 
+                && albumRegex.test(processForRegex(convertToLowerCase(spotifyTrack.album))) 
 
             
 
