@@ -192,26 +192,11 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
 
         const result = await sdk.search(`${itemTitle}%20track:${itemTitle}%20album:${itemAlbum}%20artist:${itemArtist}`, ['track'], undefined, 40)
          
-        result.tracks.items.forEach((track) => {
-
-            // console.log("Artist")
-            // console.log(convertToLowerCase(track.artists[0].name))
-            // console.log(itemArtist)
-
-            // console.log("Track")
-            // console.log(convertToLowerCase(track.name))
-            // console.log(itemTitle)
-
-            // console.log("Album")
-            // console.log(convertToLowerCase(track.album.name))
-            // console.log(itemAlbum)
-
-            // console.log("Images")
-            // console.log(track.album.images)
-            
+        result.tracks.items.forEach((track) => {          
 
             const spotifyTrack = {
                 id: track.id, 
+                uri: track.uri,
                 title: track.name, 
                 artist: track.artists[0].name, 
                 album: track.album.name, 
@@ -223,6 +208,7 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
             console.log(convertToLowerCase(spotifyTrack.title))
             console.log(convertToLowerCase(spotifyTrack.album))
             console.log(convertToLowerCase(spotifyTrack.artist))
+            
             console.log(convertToLowerCase(spotifyTrack.artist)  === convertToLowerCase(item.artist!)
             && convertToLowerCase(spotifyTrack.title) === convertToLowerCase(item.title) 
             && convertToLowerCase(spotifyTrack.album) === convertToLowerCase(item.album!) )
@@ -240,10 +226,6 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
             if (trackWasFound) {
                 console.log(matchList)
                 const matchIndex = matchList.findIndex((match) => { 
-                    console.log(match.item.id)
-                    console.log(item.id)
-                    console.log( match.item.id === item.id)
-
                     return match.item.id === item.id
                 })
 
@@ -279,7 +261,7 @@ export const createSpotifyPlaylist: RequestHandler = async (req, res) => {
         expires_in: req.body.expires_in,
         refresh_token: req.body.refresh_token,
     }
-    const playlist = req.body.playlist as string[]
+    const playlistAudios = req.body.playlist as string[]
     const title = req.body.title
 
     const sdk = SpotifyApi.withAccessToken('d5d8bfeb561e44c09bab30a30037f3b0', accessToken as AccessToken)
@@ -293,7 +275,7 @@ export const createSpotifyPlaylist: RequestHandler = async (req, res) => {
 
     //create playlist
     const spotifyPlaylist = await sdk.playlists.createPlaylist(id, {name: title})
-    await sdk.playlists.addItemsToPlaylist(spotifyPlaylist.id, playlist)
+    await sdk.playlists.addItemsToPlaylist(spotifyPlaylist.id, playlistAudios)
 
     res.json({playlist: spotifyPlaylist})
 }
