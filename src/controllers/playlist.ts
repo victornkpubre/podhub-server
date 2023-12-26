@@ -220,11 +220,11 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
             && processString(spotifyTrack.album) === processString(item.album!) )
 
 
-            const albumRegex = new RegExp(`^${itemAlbum}`, "i");
+            // const albumRegex = new RegExp(`^${itemAlbum}`, "i");
 
             const trackWasFound = processString(spotifyTrack.artist) === itemArtist
                 && processString(spotifyTrack.title) === itemTitle 
-                && albumRegex.test(processString(spotifyTrack.album)) 
+                && processString(spotifyTrack.album) === itemAlbum 
 
             
 
