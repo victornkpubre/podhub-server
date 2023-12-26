@@ -190,20 +190,20 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
          
         result.tracks.items.forEach((track) => {
 
-            console.log("Artist")
-            console.log(processString(track.artists[0].name))
-            console.log(itemArtist)
+            // console.log("Artist")
+            // console.log(processString(track.artists[0].name))
+            // console.log(itemArtist)
 
-            console.log("Track")
-            console.log(processString(track.name))
-            console.log(itemTitle)
+            // console.log("Track")
+            // console.log(processString(track.name))
+            // console.log(itemTitle)
 
-            console.log("Album")
-            console.log(processString(track.album.name))
-            console.log(itemAlbum)
+            // console.log("Album")
+            // console.log(processString(track.album.name))
+            // console.log(itemAlbum)
 
-            console.log("Images")
-            console.log(track.album.images)
+            // console.log("Images")
+            // console.log(track.album.images)
             
 
             const spotifyTrack = {
