@@ -186,7 +186,7 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
         const itemArtist = processString(item.artist!)
         const itemAlbum = processString(item.album!)
 
-        const result = await sdk.search(`${itemTitle}%20track:${itemTitle}%20album:${itemAlbum}%20artist:${itemArtist}`, ['track'])
+        const result = await sdk.search(`${itemTitle}%20track:${itemTitle}%20album:${itemAlbum}%20artist:${itemArtist}`, ['track'], undefined, 40)
          
         result.tracks.items.forEach((track) => {
 
