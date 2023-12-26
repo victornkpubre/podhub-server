@@ -168,6 +168,10 @@ const processString = ( str: string): string => {
     return (str).toLowerCase()
 }
 
+const albumProcessRegex = (str: string): string => {
+    return str.split(' ').join('/s*')
+}
+
 export const spotifymigrate: RequestHandler = async (req, res) => {
     const accessToken = {
         access_token: req.body.access_token,
@@ -224,7 +228,7 @@ export const spotifymigrate: RequestHandler = async (req, res) => {
             && processString(spotifyTrack.album) === processString(item.album!) )
 
 
-            const albumRegex = new RegExp(`^${itemAlbum} (.*)`, "i");
+            const albumRegex = new RegExp(`^${albumProcessRegex(itemAlbum)}/s*(.*)`, "i");
 
             const trackWasFound = processString(spotifyTrack.artist) === itemArtist
                 && processString(spotifyTrack.title) === itemTitle 
